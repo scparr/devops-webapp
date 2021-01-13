@@ -1,3 +1,5 @@
+//START-OF-SCRIPT
+//comment0
 timeout(time: 60, unit: 'SECONDS') {
   node('master') {
     properties([
@@ -20,3 +22,4 @@ timeout(time: 60, unit: 'SECONDS') {
     }
   }
 }
+//END-OF-SCRIPT
