@@ -18,8 +18,9 @@ timeout(time: 60, unit: 'SECONDS') {
     }
     
     stage('Archive') {
-      archiveArtifacts 'build/libs/*.war'
+      archiveArtifacts "build/libs/*.war"
     }
-  }
+  } 
 }
+    
 //END-OF-SCRIPT
