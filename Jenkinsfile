@@ -1,26 +1,29 @@
-//START-OF-SCRIPT
-//comment0
-timeout(time: 60, unit: 'SECONDS') {
-  node('master') {
-    properties([
-      pipelineTriggers([pollSCM('H/1 * * * 1-5')])
-    ])
-    
-    def GRADLE_HOME = tool name: 'gradle-4.10.2', type: 'hudson.plugins.gradle.GradleInstallation'
-    sh "${GRADLE_HOME}/bin/gradle tasks"
-    
-    stage('Clone') {
-      git url: 'https://github.com/scparr/devops-webapp.git'
+pipeline {
+  agent none
+  stages {
+    stage('Maven') {
+      agent {
+        docker {
+          image 'maven:3.6.0-jdk-12-alpine'
+          label 'master'
+        }
+      }
+      steps {
+        echo 'Hello, Maven'
+        sh 'mvn --version'
+      }
     }
-    
-    stage('Build') {
-      sh "${GRADLE_HOME}/bin/gradle build --info"
+    stage('JDK') {
+      agent {
+        docker {
+          image 'openjdk:11.0.1-jdk'
+          label 'master'
+        }
+      }
+      steps {
+        echo 'Hello, JDK'
+        sh 'java -version'
+      }
     }
-    
-    stage('Archive') {
-      archiveArtifacts 'build/libs/*.war'
-    }
-  } 
+  }
 }
-    
-//END-OF-SCRIPT
